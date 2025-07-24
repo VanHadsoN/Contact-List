@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/VanHadsoN/Contact-List/issues"
   },
-  "homepage": "https://github.com/VanHadsoN/Contact-List#readme"
+  "homepage": "https://github.com/VanHadsoN/Contact-List#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
 }
