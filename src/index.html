@@ -6,8 +6,21 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Contact List</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <main class="container">
+    <h1>Contact List</h1>
 
+    <form id="contact-form" class="form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="text" id="vacancy" placeholder="Vacancy" required />
+      <input type="tel" id="phone" placeholder="Phone" required />
+
+      <button type="submit" id="add-btn">ADD</button>
+      <button type="button" id="clear-btn">Clear List</button>
+      <button type="button" id="search-btn">Search</button>
+    </form>
+  </main>
 </body>
 </html>
