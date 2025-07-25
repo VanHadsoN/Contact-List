@@ -67,3 +67,30 @@ h1 {
     border-radius: 4px;
     cursor: pointer;
 }
+
+/*container with letters in 2 columns*/
+.alphabet-list {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.letter-block {
+    background-color: #f8bebe;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1rem;
+    width: 100%; /* растягиваем по ширине родителя */
+    min-height: 30px;
+    box-sizing: border-box;
+}
