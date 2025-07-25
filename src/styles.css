@@ -19,18 +19,27 @@ h1 {
 
 .form {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-input {
-    flex: 1;
+/* Секция input-ов */
+.form input {
     padding: 10px;
     font-size: 1rem;
 }
 
-button {
-    padding: 10px 20px;
+/* Кнопки в отдельной строке */
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 10px;
     font-size: 1rem;
     cursor: pointer;
 }
