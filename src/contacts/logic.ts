@@ -29,7 +29,7 @@ export function getContacts(): Contact[] {
 
 // функция полностью очищает список контактов
 export function clearContacts() {
-    contacts = [];
+    contacts.length = 0;
 }
 
 // функция группирует контакты по первой букве имени - возвращает объект вида { A: [...], B: [...], ... }
