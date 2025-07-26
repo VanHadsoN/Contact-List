@@ -7,13 +7,13 @@ export type Contact = {
 
 // тип группировки по первой букве имени name
 export type ContactsMap = {
-    [letter: string]: Contact[];
+    [letter: string]: Contact[]; // объект, где ключ - это буква (A, B, C…), а значение - массив контактов
 };
 
 // массив контактов
 let contacts: Contact[] = [];
 
-// функция добавления контакта
+// функция добавляет новый контакт, валидирует и проверяет дубликаты
 export function addContact(newContact: Contact): string | null {
     const { name, vacancy, phone } = newContact;
 
@@ -31,4 +31,37 @@ export function addContact(newContact: Contact): string | null {
     }
     contacts.push(newContact);
     return null; // значит ошибок не было
+}
+
+// функция возвращает текущий список контактов
+export function getContacts(): Contact[] {
+    return contacts;
+}
+
+// функция полностью очищает список контактов
+export function clearContacts() {
+    contacts = [];
+}
+
+// функция группирует контакты по первой букве имени - возвращает объект вида { A: [...], B: [...], ... }
+export function groupByLetter(list: Contact[]): ContactsMap {
+    const grouped: ContactsMap = {};
+    const letterPattern = /^[A-Za-zА-Яа-яЁё]$/; // символ должен быть буквой
+
+    for (const contact of list) {
+        const rawLetter = contact.name.charAt(0);
+
+        if (!rawLetter) continue; // пропускаем пустые имена
+
+        const firstLetter = rawLetter.toUpperCase();
+
+        if (!letterPattern.test(firstLetter)) continue; // пропускаем если первый символ не буква
+
+        if (!grouped[firstLetter]) {
+            grouped[firstLetter] = [];
+        }
+
+        grouped[firstLetter].push(contact);
+    }
+    return grouped;
 }
