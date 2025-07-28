@@ -54,3 +54,12 @@ export function groupByLetter(list: Contact[]): ContactsMap {
     }
     return grouped;
 }
+
+// функция для обновления счетчиков букв
+export function updateLetterCounts(contacts: Contact[]) {
+    // берём все блоки букв
+    const letterBlocks = document.querySelector('.letter-block');
+
+    // обнуляются счётчики
+
+}
