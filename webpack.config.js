@@ -31,7 +31,15 @@ module.exports = {
 		})
 	],
 	devServer: {
-		static: './dist', // директория для dev-сервера
-		port: 3000 // порт
+		static: './dist',
+		port: 3000,
+		devMiddleware: {
+			writeToDisk: true, // записывать файлы на диск
+		},
+		// Включить подробное логирование
+		client: {
+			logging: 'info',
+			overlay: true
+		}
 	}
 };
