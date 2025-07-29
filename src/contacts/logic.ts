@@ -61,6 +61,8 @@ export function updateLetterCounts(contacts: Contact[]) {
     // берём все блоки букв
     const letterBlocks = document.querySelectorAll('.alphabet-list .letter-block');
 
+    console.log('Letter blocks found:', letterBlocks.length);
+
     // NodeList преобразуется в массив с явным указанием типа
     Array.from(letterBlocks).forEach((block) => {
         const letter = block.getAttribute('.data-letter');
@@ -70,6 +72,8 @@ export function updateLetterCounts(contacts: Contact[]) {
     // контакты группируются по первой букве
     const groupedContacts = contacts.reduce((acc, contact) => {
         const firstLetter = contact.name[0].toUpperCase();
+        console.log('Processing contact:', contact.name, 'First letter:', firstLetter);
+
         if (!acc[firstLetter]) {
             acc[firstLetter] = 0;
         }
@@ -77,11 +81,16 @@ export function updateLetterCounts(contacts: Contact[]) {
         return acc;
     }, {} as Record<string, number>);
 
+    console.log('Grouped contacts:', groupedContacts);
+
     // обновляются блоки  буквами
     Object.entries(groupedContacts).forEach(([letter, count]) => {
         const letterBlock = document.querySelector<HTMLDivElement>(`.letter-block[data-letter="${letter}"]`);
         if (letterBlock) {
+            console.log(`Updating letter block for ${letter} with count ${count}`);
             letterBlock.textContent = `${letter} (${count})`;
+        } else {
+            console.warn(`No letter blocks found for letter ${letter}`);
         }
     });
 }
