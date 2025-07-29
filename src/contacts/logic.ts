@@ -59,7 +59,7 @@ export function groupByLetter(list: Contact[]): ContactsMap {
 export function updateLetterCounts(contacts: Contact[]) {
     console.log('Updating letter counts:', contacts.length);
     // берём все блоки букв
-    const letterBlocks = document.querySelectorAll<HTMLDivElement>('.letter-block');
+    const letterBlocks = document.querySelectorAll('.alphabet-list .letter-block');
 
     // NodeList преобразуется в массив с явным указанием типа
     Array.from(letterBlocks).forEach((block) => {
