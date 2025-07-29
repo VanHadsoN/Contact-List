@@ -57,9 +57,31 @@ export function groupByLetter(list: Contact[]): ContactsMap {
 
 // функция для обновления счетчиков букв
 export function updateLetterCounts(contacts: Contact[]) {
+    console.log('Updating letter counts:', contacts.length);
     // берём все блоки букв
-    const letterBlocks = document.querySelector('.letter-block');
+    const letterBlocks = document.querySelectorAll<HTMLDivElement>('.letter-block');
 
-    // обнуляются счётчики
+    // NodeList преобразуется в массив с явным указанием типа
+    Array.from(letterBlocks).forEach((block) => {
+        const letter = block.getAttribute('.data-letter');
+        block.textContent = letter || '';
+    })
 
+    // контакты группируются по первой букве
+    const groupedContacts = contacts.reduce((acc, contact) => {
+        const firstLetter = contact.name[0].toUpperCase();
+        if (!acc[firstLetter]) {
+            acc[firstLetter] = 0;
+        }
+        acc[firstLetter]++;
+        return acc;
+    }, {} as Record<string, number>);
+
+    // обновляются блоки  буквами
+    Object.entries(groupedContacts).forEach(([letter, count]) => {
+        const letterBlock = document.querySelector<HTMLDivElement>(`.letter-block[data-letter="${letter}"]`);
+        if (letterBlock) {
+            letterBlock.textContent = `${letter} (${count})`;
+        }
+    });
 }
