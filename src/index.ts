@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { contacts, addContact, groupByLetter, Contact } from './contacts/index';
+import { contacts, addContact, groupByLetter, updateLetterCounts, Contact } from './contacts/index';
 
 const form = document.getElementById('contact-form') as HTMLFormElement;
 const nameInput = document.getElementById('name') as HTMLInputElement;
