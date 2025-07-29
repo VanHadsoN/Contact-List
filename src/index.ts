@@ -6,7 +6,7 @@ const form = document.getElementById('contact-form') as HTMLFormElement;
 const nameInput = document.getElementById('name') as HTMLInputElement;
 const vacancyInput = document.getElementById('vacancy') as HTMLInputElement;
 const phoneInput = document.getElementById('phone') as HTMLInputElement;
-const addButton = document.querySelector<HTMLButtonElement>('#add-button')!;
+const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Предотвращаем стандартную отправку формы
