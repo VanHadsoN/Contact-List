@@ -23,8 +23,8 @@ form.addEventListener('submit', (e) => {
         console.log('✅ Contact successfully added');
         console.log('Current list of contacts:', contacts);
 
-        // вызывается updateLetterCounts сразу после добавления контакта
-        updateLetterCounts(contacts);
+        // // вызывается updateLetterCounts сразу после добавления контакта
+        // updateLetterCounts(contacts);
 
         const groupedContacts = groupByLetter(contacts);
         console.log('Grouped contacts:', groupedContacts);
