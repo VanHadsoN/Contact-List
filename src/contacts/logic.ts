@@ -18,7 +18,11 @@ export function addContact(newContact: Contact): string | null {
     if (isDublicate) {
         return 'Contact already exists.';
     }
-    contacts.push(newContact);
+    contacts.push(newContact); // явно добавляем в массив contacts
+
+    // обновляем счётчики букв
+    updateLetterCounts(contacts);
+
     return null; // значит ошибок не было
 }
 
