@@ -43,7 +43,7 @@ export function getContacts(): Contact[] {
 
 // функция полностью очищает список контактов
 export function clearContacts() {
-    contacts.length = 0;
+    contacts.length = 0; // полностью очищаем массив
 }
 
 // функция группирует контакты по первой букве имени - возвращает объект вида { A: [...], B: [...], ... }
@@ -83,6 +83,10 @@ export function updateLetterCounts(contacts: Contact[]) {
         const letter = block.getAttribute('data-letter');
         block.textContent = letter || '';
     });
+
+    if (contacts.length === 0) { // Если список контактов пустой - выходим
+        return;
+    }
 
     // контакты группируются по первой букве
     const groupedContacts = contacts.reduce((acc, contact) => {
