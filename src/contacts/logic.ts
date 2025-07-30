@@ -70,7 +70,7 @@ export function updateLetterCounts(contacts: Contact[]) {
 
     // сбрасываем текст для всех блоков до изначального состояния
     letterBlocks.forEach((block) => {
-        const letter = block.getAttribute('.data-letter');
+        const letter = block.getAttribute('data-letter');
         block.textContent = letter || '';
     });
 
