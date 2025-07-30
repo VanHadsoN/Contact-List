@@ -57,11 +57,11 @@ export function groupByLetter(list: Contact[]): ContactsMap {
 
 // функция для обновления счетчиков букв
 export function updateLetterCounts(contacts: Contact[]) {
-    // console.log('Updating letter counts:', contacts.length);
+    console.log('Updating letter counts:', contacts.length);
     // получаем все блоки букв
     const letterBlocks = document.querySelectorAll('.alphabet-list .letter-block');
 
-    // console.log('Letter blocks found:', letterBlocks.length);
+    console.log('Total letter blocks:', letterBlocks.length);
 
 
     // сбрасываем текст для всех блоков до изначального состояния
@@ -73,7 +73,7 @@ export function updateLetterCounts(contacts: Contact[]) {
     // контакты группируются по первой букве
     const groupedContacts = contacts.reduce((acc, contact) => {
         const firstLetter = contact.name[0].toUpperCase();
-        // console.log('Processing contact:', contact.name, 'First letter:', firstLetter);
+        console.log('Processing contact:', contact.name, 'First letter:', firstLetter);
 
         if (!acc[firstLetter]) {
             acc[firstLetter] = 0;
@@ -82,11 +82,12 @@ export function updateLetterCounts(contacts: Contact[]) {
         return acc;
     }, {} as Record<string, number>);
 
-    // console.log('Grouped contacts:', groupedContacts);
+    console.log('Grouped contacts:', groupedContacts);
 
     // обновляются блоки  буквами
     Object.entries(groupedContacts).forEach(([letter, count]) => {
         const letterBlock = document.querySelector(`.alphabet-list .letter-block[data-letter="${letter}"]`);
+
         if (letterBlock) {
             console.log(`Updating letter block for ${letter} with count ${count}`);
             letterBlock.textContent = `${letter} (${count})`;
