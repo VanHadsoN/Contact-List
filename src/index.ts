@@ -1,11 +1,12 @@
 import './styles.css';
 
-import { contacts, addContact, groupByLetter, updateLetterCounts, Contact } from './contacts/index';
+import { contacts, addContact, groupByLetter, updateLetterCounts, clearContacts, Contact } from './contacts/index';
 
 const form = document.getElementById('contact-form') as HTMLFormElement;
 const nameInput = document.getElementById('name') as HTMLInputElement;
 const vacancyInput = document.getElementById('vacancy') as HTMLInputElement;
 const phoneInput = document.getElementById('phone') as HTMLInputElement;
+const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; // Получаем кнопку Clear List
 const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 form.addEventListener('submit', (e) => {
@@ -40,4 +41,10 @@ form.addEventListener('submit', (e) => {
 // инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
     updateLetterCounts(contacts);
+});
+
+clearButton.addEventListener('click', () => {
+    clearContacts(); // вызываем функцию очистки контактов
+
+    alert('Contact list cleared');
 });
