@@ -46,5 +46,4 @@ document.addEventListener('DOMContentLoaded', () => {
 clearButton.addEventListener('click', () => {
     clearContacts(); // вызываем функцию очистки контактов
     updateLetterCounts(contacts); // обновляем счетчики букв после очистки
-    alert('Contact list cleared');
 });
