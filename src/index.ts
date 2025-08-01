@@ -56,3 +56,50 @@ clearButton.addEventListener('click', () => {
     clearContacts(); // вызываем функцию очистки контактов
     updateLetterCounts(contacts); // обновляем счетчики букв после очистки
 });
+
+// модальное окно
+const searchModal = document.getElementById('search-modal')!;
+const searchInput = document.getElementById('search-input') as HTMLInputElement;
+const searchResultsContainer = document.getElementById('search-results')!;
+const searchBtn = document.getElementById('search-btn')!;
+const closeModalBtn = document.querySelector('.close-modal')!;
+
+// открытие модального окна
+searchBtn.addEventListener('click', () => {
+    searchModal.classList.remove('hidden');
+});
+
+// закрытие модального окна
+closeModalBtn.addEventListener('click', () => {
+    searchModal.classList.add('hidden');
+});
+
+// поиск
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    const results = searchContacts(query);
+
+    // очистка предыдущих результатов
+    searchResultsContainer.innerHTML = '';
+
+    // отображение результатов
+    results.forEach(contact => {
+        const resultItem = document.createElement('div');
+        resultItem.classList.add('search-result-item');
+        resultItem.innerHTML = `
+            <span>${contact.name} - ${contact.vacancy} - ${contact.phone}</span>
+            <div>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+        `;
+    // кнопка удаления
+    const deleteButton = resultItem.querySelector('.delete-btn')!;
+        deleteButton.addEventListener('click', () => {
+        resultItem.remove();
+        updateLetterCounts(contacts);
+    });
+
+    searchResultsContainer.appendChild(resultItem);
+  });
+});
