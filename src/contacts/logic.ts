@@ -117,10 +117,18 @@ export function updateLetterCounts(contacts: Contact[]) {
 
 export function searchContacts(query: string): Contact[] {
     const lowerQuery = query.toLowerCase();
-    return contacts.filter(contact =>
-        contact.name.toLowerCase().includes(lowerQuery) ||
+    console.log('Search query:', lowerQuery);
+
+
+    const results = contacts.filter(contact => {
+        console.log('Checking contact:', contact.name, 'Query:', lowerQuery);
+        console.log('Name includes:', contact.name.toLowerCase().includes(lowerQuery));
+        return contact.name.toLowerCase().includes(lowerQuery) ||
         contact.phone.includes(lowerQuery)
-    );
+    });
+
+    console.log('Search results:', results);
+    return results;
 }
 
 export function deleteContact(contactToDelete: Contact): void {
