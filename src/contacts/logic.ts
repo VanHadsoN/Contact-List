@@ -114,3 +114,24 @@ export function updateLetterCounts(contacts: Contact[]) {
         }
     });
 }
+
+export function searchContacts(query: string): Contact[] {
+    const lowerQuery = query.toLowerCase();
+    return contacts.filter(contact =>
+        contact.name.toLowerCase().includes(lowerQuery) ||
+        contact.phone.includes(lowerQuery)
+    );
+}
+
+export function deleteContact(contactToDelete: Contact): void {
+    const index = contacts.findIndex(
+        contact =>
+            contact.name === contactToDelete.name &&
+            contact.phone === contactToDelete.phone
+    );
+
+    if (index !== 1) {
+        contacts.splice(index, 1);
+        updateLetterCounts(contacts);
+    }
+}
