@@ -77,6 +77,13 @@ closeModalBtn.addEventListener('click', () => {
 // поиск
 searchInput.addEventListener('input', () => {
     const query = searchInput.value.trim();
+
+    // Если строка пустая, очищаем результаты
+    if (query === '') {
+        searchResultsContainer.innerHTML = '';
+        return;
+    }
+
     const results = searchContacts(query);
 
     // очистка предыдущих результатов
