@@ -5,6 +5,7 @@ import {
     addContact,
     searchContacts,
     deleteContact,
+    editContact,
     groupByLetter,
     updateLetterCounts,
     clearContacts,
@@ -16,7 +17,7 @@ const nameInput = document.getElementById('name') as HTMLInputElement;
 const vacancyInput = document.getElementById('vacancy') as HTMLInputElement;
 const phoneInput = document.getElementById('phone') as HTMLInputElement;
 const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; // Получаем кнопку Clear List
-const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
+// const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Предотвращаем стандартную отправку формы
@@ -94,13 +95,13 @@ searchInput.addEventListener('input', () => {
         const resultItem = document.createElement('div');
         resultItem.classList.add('search-result-item');
         resultItem.innerHTML = `
-            <span>${contact.name} - ${contact.vacancy} - ${contact.phone}</span>
+            <span class="contact-info">${contact.name} - ${contact.vacancy} - ${contact.phone}</span>
             <div>
                 <button class="edit-btn">Edit</button>
                 <button class="delete-btn">Delete</button>
             </div>
         `;
-    // кнопка удаления
+    // логика удаления
     const deleteButton = resultItem.querySelector('.delete-btn')!;
         deleteButton.addEventListener('click', () => {
         deleteContact(contact); // передаем конкретный контакт для удаления
@@ -108,6 +109,41 @@ searchInput.addEventListener('input', () => {
         updateLetterCounts(contacts);
     });
 
-    searchResultsContainer.appendChild(resultItem);
+   // логика редактирования
+   const editButton = resultItem.querySelector('.edit-btn')!;
+   editButton.addEventListener('click', () => {
+       const contactInfoSpan = resultItem.querySelector('.contact-info')!;
+
+       // меняем текст на инпуты
+       contactInfoSpan.innerHTML = `
+            <input type="text" class="edit-name" value="${contact.name}">
+            <input type="text" class="edit-vacancy" value="${contact.vacancy}">
+            <input type="text" class="edit-phone" value="${contact.phone}">
+            <button class="save-edit-btn">Save</button>
+       `;
+
+       const saveEditBtn = resultItem.querySelector('.save-edit-btn')!;
+       saveEditBtn.addEventListener('click', () => {
+           const editedName = (resultItem.querySelector('.edit-name') as HTMLInputElement).value;
+           const editedVacancy = (resultItem.querySelector('.edit-vacancy') as HTMLInputElement).value;
+           const editedPhone = (resultItem.querySelector('.edit-phone') as HTMLInputElement).value;
+
+           const editResult = editContact(contact, {
+               name: editedName,
+               vacancy: editedVacancy,
+               phone: editedPhone
+           });
+
+           if (editResult === null) {
+               // успешное редактирование
+               contactInfoSpan.textContent = `${editedName} - ${editedVacancy} - ${editedPhone}`;
+               updateLetterCounts(contacts);
+           } else {
+               alert(editResult);
+           }
+       });
+   });
+
+   searchResultsContainer.appendChild(resultItem);
   });
 });
