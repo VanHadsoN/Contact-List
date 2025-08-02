@@ -143,3 +143,29 @@ export function deleteContact(contactToDelete: Contact): void {
         updateLetterCounts(contacts);
     }
 }
+
+export function editContact(oldContact: Contact, newContactData: Contact): string | null {
+    const index = contacts.findIndex(
+        contact =>
+            contact.name === oldContact.name &&
+            contact.phone === oldContact.phone
+    );
+
+    if (index === -1) return "Contact not found";
+
+    // валидация
+    const trimmedName = newContactData.name.trim();
+    const trimmedPhone = newContactData.phone.trim();
+
+    if (trimmedName.length === 0) return "Name cannot be empty";
+    if (trimmedPhone.length === 0) return "Phone cannot be empty";
+
+    // обновляем контакт
+    contacts[index] = {
+        name: trimmedName,
+        vacancy: newContactData.vacancy.trim(),
+        phone: trimmedPhone
+    };
+
+    return null; // при успешном редактировании
+}
