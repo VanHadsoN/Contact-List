@@ -96,6 +96,7 @@ searchInput.addEventListener('input', () => {
     // кнопка удаления
     const deleteButton = resultItem.querySelector('.delete-btn')!;
         deleteButton.addEventListener('click', () => {
+        deleteContact(contact); // передаем конкретный контакт для удаления
         resultItem.remove();
         updateLetterCounts(contacts);
     });
