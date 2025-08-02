@@ -134,3 +134,13 @@ h1 {
 #search-results {
     margin-top: 20px;
 }
+
+/* Стили для редактирования контактов из поиска */
+.search-result-item input {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.save-edit-btn {
+    margin-left: 10px;
+}
