@@ -58,13 +58,13 @@ form.addEventListener('submit', (e) => {
         hasErrors = true;
     }
 
-    // валидация телефона
-    const phoneRegex = /^[\d+\-()]+$/;
-    if (!phoneRegex.test(phone) || phone.length < 7) {
+    // валидация телефона (строгий формат +7XXXXXXXXXX)
+    const phoneRegex = /^\+7\d{10}$/;
+    if (!phoneRegex.test(phone)) {
         phoneInput.classList.add('error-input');
         const errorMsg = document.createElement('div');
         errorMsg.classList.add('error-message');
-        errorMsg.textContent = 'Incorrect phone format';
+        errorMsg.textContent = 'Enter the number with the format +7XXXXXXXXXX';
         phoneInput.after(errorMsg);
         hasErrors = true;
     }
