@@ -22,20 +22,62 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Предотвращаем стандартную отправку формы
 
+    // сбрасываем предыдущие ошибки
+    const previousErrorMessages = document.querySelectorAll('.error-message');
+    Array.from(previousErrorMessages).forEach(el => el.remove());
+
+    nameInput.classList.remove('error-input');
+    phoneInput.classList.remove('error-input');
+
     const name = nameInput.value.trim();
     const vacancy = vacancyInput.value.trim();
     const phone = phoneInput.value.trim();
 
-    console.log('Attempt to add contact:', { name, vacancy, phone });
+    let hasErrors = false;
 
-    const result = addContact({ name, vacancy, phone });
+    // валидация имени
+    if (name.length < 2) {
+        nameInput.classList.add('error-input');
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = 'The name must be at least 2 characters long';
+        nameInput.after(errorMsg);
+        hasErrors = true;
+    }
+
+    // валидация телефона
+    const phoneRegex = /^[\d+\-()]+$/;
+    if (!phoneRegex.test(phone) || phone.length < 7) {
+        phoneInput.classList.add('error-input');
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = 'Incorrect phone format';
+        phoneInput.after(errorMsg);
+        hasErrors = true;
+    }
+
+    // проверка на дубликаты
+    const isDuplicate = contacts.some(contact =>
+        contact.phone === phone
+    );
+    if (isDuplicate) {
+        phoneInput.classList.add('error-input');
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = 'Such phone number is already exists.';
+        phoneInput.after(errorMsg);
+        hasErrors = true;
+    }
+
+    // если есть ошибки, то контакт не добавляется
+    if (hasErrors) {
+        return;
+    }
+
+    const result = addContact({name, vacancy, phone});
 
     if (result === null) {
         console.log('✅ Contact successfully added');
-        console.log('Current list of contacts:', contacts);
-
-        // // вызывается updateLetterCounts сразу после добавления контакта
-        // updateLetterCounts(contacts);
 
         const groupedContacts = groupByLetter(contacts);
         console.log('Grouped contacts:', groupedContacts);
@@ -43,6 +85,7 @@ form.addEventListener('submit', (e) => {
         nameInput.value = '';
         vacancyInput.value = '';
         phoneInput.value = '';
+        updateLetterCounts(contacts);
     } else {
         console.warn('❌ Error:', result);
     }
