@@ -27,6 +27,7 @@ form.addEventListener('submit', (e) => {
     Array.from(previousErrorMessages).forEach(el => el.remove());
 
     nameInput.classList.remove('error-input');
+    vacancyInput.classList.remove('error-input');
     phoneInput.classList.remove('error-input');
 
     const name = nameInput.value.trim();
@@ -35,13 +36,25 @@ form.addEventListener('submit', (e) => {
 
     let hasErrors = false;
 
-    // валидация имени
-    if (name.length < 2) {
+    // валидация имени (только буквы)
+    const nameRegex = /^[а-яА-ЯёЁa-zA-Z\s]+$/;
+    if (name.length < 2 || !nameRegex.test(name)) {
         nameInput.classList.add('error-input');
         const errorMsg = document.createElement('div');
         errorMsg.classList.add('error-message');
-        errorMsg.textContent = 'The name must be at least 2 characters long';
+        errorMsg.textContent = 'The name must contain only letters and be at least 2 characters long';
         nameInput.after(errorMsg);
+        hasErrors = true;
+    }
+
+    // валидация должности (только буквы)
+    const vacancyRegex = /^[а-яА-ЯёЁa-zA-Z\s]+$/;
+    if (vacancy.length > 0 && !vacancyRegex.test(vacancy)) {
+        vacancyInput.classList.add('error-input');
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = 'The vacancy should only contain letters.';
+        vacancyInput.after(errorMsg);
         hasErrors = true;
     }
 
