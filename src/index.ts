@@ -58,8 +58,8 @@ form.addEventListener('submit', (e) => {
         hasErrors = true;
     }
 
-    // валидация телефона (строгий формат +7XXXXXXXXXX)
-    const phoneRegex = /^\+7\d{10}$/;
+    // валидация телефона
+    const phoneRegex = /^\+?[78]?\d{10}$/;
     if (!phoneRegex.test(phone)) {
         phoneInput.classList.add('error-input');
         const errorMsg = document.createElement('div');
