@@ -144,3 +144,13 @@ h1 {
 .save-edit-btn {
     margin-left: 10px;
 }
+
+.error-input {
+    border: 2px solid red;
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
