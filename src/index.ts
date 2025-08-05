@@ -59,7 +59,7 @@ form.addEventListener('submit', (e) => {
     }
 
     // валидация телефона
-    const phoneRegex = /^\+?[78]?\d{10}$/;
+    const phoneRegex = /^\+?7\d{10}$/;
     if (!phoneRegex.test(phone)) {
         phoneInput.classList.add('error-input');
         const errorMsg = document.createElement('div');
@@ -101,6 +101,11 @@ form.addEventListener('submit', (e) => {
         updateLetterCounts(contacts);
     } else {
         console.warn('❌ Error:', result);
+        // показываем ошибку пользователю, если контакт не добавлен
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = result;
+        phoneInput.after(errorMsg);
     }
 });
 

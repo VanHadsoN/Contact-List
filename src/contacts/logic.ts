@@ -4,11 +4,11 @@ import type { Contact, ContactsMap } from "./types";
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
 export function addContact(newContact: Contact): string | null {
-    const { name, vacancy, phone } = newContact;
+    const { name, phone } = newContact;
 
     // проверка на дубликат по имени и телефону
     const isDublicate = contacts.some(
-        (c) => c.name.toLowerCase() === name.toLocaleLowerCase() && c.phone === phone
+        (c) => c.phone === phone
     );
     if (isDublicate) {
         return 'Contact already exists';
