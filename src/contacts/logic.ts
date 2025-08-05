@@ -6,21 +6,6 @@ import type { Contact, ContactsMap } from "./types";
 export function addContact(newContact: Contact): string | null {
     const { name, vacancy, phone } = newContact;
 
-    // проверка на пустое значение
-    if (!name || name.trim() === '') {
-        return 'Name cannot be empty';
-    }
-
-    if (!vacancy || vacancy.trim() === '') {
-        return 'Vacancy cannot be empty';
-    }
-
-    // проверка номера телефона
-    const phoneRegex = /^\+\d\s\d{3}\s\d{3}\s\d{2}\s\d{2}$/;
-    if (!phone || !phoneRegex.test(phone)) {
-        return 'Phone number must be in format: +x xxx xxx xx xx';
-    }
-
     // проверка на дубликат по имени и телефону
     const isDublicate = contacts.some(
         (c) => c.name.toLowerCase() === name.toLocaleLowerCase() && c.phone === phone
