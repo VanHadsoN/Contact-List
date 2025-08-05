@@ -1,6 +1,19 @@
 import { contacts } from "./data";
 import type { Contact, ContactsMap } from "./types";
 
+// загрузка контактов из LocalStorage
+export function loadContactsFromLocalStorage() {
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts) {
+        contacts.splice(0, contacts.length, ...JSON.parse(savedContacts));
+        updateLetterCounts(contacts);
+    }
+}
+
+// сохранение контактов в LocalStorage
+export function saveContactsToLocalStorage() {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+}
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
 export function addContact(newContact: Contact): string | null {
@@ -17,18 +30,15 @@ export function addContact(newContact: Contact): string | null {
 
     // обновляем счётчики букв
     updateLetterCounts(contacts);
+    saveContactsToLocalStorage();
 
     return null; // значит ошибок не было
 }
-
-// функция возвращает текущий список контактов
-export function getContacts(): Contact[] {
-    return contacts;
-}
-
 // функция полностью очищает список контактов
 export function clearContacts() {
     contacts.length = 0; // полностью очищаем массив
+    saveContactsToLocalStorage();
+    updateLetterCounts(contacts);
 }
 
 // функция группирует контакты по первой букве имени - возвращает объект вида { A: [...], B: [...], ... }
@@ -152,5 +162,6 @@ export function editContact(oldContact: Contact, newContactData: Contact): strin
         phone: trimmedPhone
     };
 
+    saveContactsToLocalStorage();
     return null; // при успешном редактировании
 }
