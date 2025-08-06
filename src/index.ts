@@ -2,6 +2,7 @@ import './styles.css';
 
 import {
     contacts,
+    loadContactsFromLocalStorage,
     addContact,
     searchContacts,
     deleteContact,
@@ -18,6 +19,10 @@ const vacancyInput = document.getElementById('vacancy') as HTMLInputElement;
 const phoneInput = document.getElementById('phone') as HTMLInputElement;
 const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; // Получаем кнопку Clear List
 // const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadContactsFromLocalStorage(); // загружаем контакты при старте приложения
+});
 
 form.addEventListener('submit', (e) => {
     e.preventDefault(); // Предотвращаем стандартную отправку формы
