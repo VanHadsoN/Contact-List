@@ -6,13 +6,17 @@ export function loadContactsFromLocalStorage() {
     const savedContacts = localStorage.getItem('contacts');
     if (savedContacts) {
         contacts.splice(0, contacts.length, ...JSON.parse(savedContacts));
+        console.log('Contacts loaded from localStorage:', contacts);
         updateLetterCounts(contacts);
+    } else {
+        console.log('There are no contacts in localStorage');
     }
 }
 
 // сохранение контактов в LocalStorage
 export function saveContactsToLocalStorage() {
     localStorage.setItem('contacts', JSON.stringify(contacts));
+    console.log('Contacts are saved in localStorage:', contacts);
 }
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
