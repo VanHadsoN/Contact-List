@@ -154,3 +154,72 @@ h1 {
     font-size: 12px;
     margin-top: 5px;
 }
+
+/* Медиа-запросы для адаптивности */
+@media screen and (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .alphabet-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .column {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .letter-block {
+        flex: 1;
+        max-width: 50px;
+        padding: 8px;
+    }
+
+    .modal-content {
+        width: 90%;
+        max-width: 500px;
+        margin: 10% auto;
+    }
+
+    .list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .list li button {
+        margin-top: 10px;
+        align-self: flex-start;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .form input,
+    .form-buttons button {
+        font-size: 14px;
+    }
+
+    .letter-block {
+        font-size: 14px;
+        padding: 6px;
+        max-width: 40px;
+    }
+
+    .modal-content {
+        padding: 15px;
+    }
+}
