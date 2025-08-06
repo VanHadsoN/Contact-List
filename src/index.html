@@ -12,54 +12,50 @@
   <main class="container">
     <h1>Contact List</h1>
 
-    <div class="form-wrapper">
-      <form id="contact-form" class="form">
-        <input type="text" id="name" placeholder="Name" required />
-        <input type="text" id="vacancy" placeholder="Vacancy" required />
-        <input type="tel" id="phone" placeholder="Phone +7XXXXXXXXXX" required />
+    <form id="contact-form" class="form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="text" id="vacancy" placeholder="Vacancy" required />
+      <input type="tel" id="phone" placeholder="Phone +7XXXXXXXXXX" required />
 
-        <div class="form-buttons">
-          <button type="submit" id="add-btn">ADD</button>
-          <button type="button" id="clear-btn">Clear List</button>
-          <button type="button" id="search-btn">Search</button>
-        </div>
-      </form>
-    </div>
+      <div class="form-buttons">
+        <button type="submit" id="add-btn">ADD</button>
+        <button type="button" id="clear-btn">Clear List</button>
+        <button type="button" id="search-btn">Search</button>
+      </div>
+    </form>
 
-    <div class="alphabet-wrapper">
-      <div class="alphabet-list">
-        <div class="column">
-          <!-- A-M -->
-          <div class="letter-block" data-letter="A">A</div>
-          <div class="letter-block" data-letter="B">B</div>
-          <div class="letter-block" data-letter="C">C</div>
-          <div class="letter-block" data-letter="D">D</div>
-          <div class="letter-block" data-letter="E">E</div>
-          <div class="letter-block" data-letter="F">F</div>
-          <div class="letter-block" data-letter="G">G</div>
-          <div class="letter-block" data-letter="H">H</div>
-          <div class="letter-block" data-letter="I">I</div>
-          <div class="letter-block" data-letter="J">J</div>
-          <div class="letter-block" data-letter="K">K</div>
-          <div class="letter-block" data-letter="L">L</div>
-          <div class="letter-block" data-letter="M">M</div>
-        </div>
-        <div class="column">
-          <!-- N-Z -->
-          <div class="letter-block" data-letter="N">N</div>
-          <div class="letter-block" data-letter="O">O</div>
-          <div class="letter-block" data-letter="P">P</div>
-          <div class="letter-block" data-letter="Q">Q</div>
-          <div class="letter-block" data-letter="R">R</div>
-          <div class="letter-block" data-letter="S">S</div>
-          <div class="letter-block" data-letter="T">T</div>
-          <div class="letter-block" data-letter="U">U</div>
-          <div class="letter-block" data-letter="V">V</div>
-          <div class="letter-block" data-letter="W">W</div>
-          <div class="letter-block" data-letter="X">X</div>
-          <div class="letter-block" data-letter="Y">Y</div>
-          <div class="letter-block" data-letter="Z">Z</div>
-        </div>
+    <div class="alphabet-list">
+      <div class="column">
+        <!-- A-M -->
+        <div class="letter-block" data-letter="A">A</div>
+        <div class="letter-block" data-letter="B">B</div>
+        <div class="letter-block" data-letter="C">C</div>
+        <div class="letter-block" data-letter="D">D</div>
+        <div class="letter-block" data-letter="E">E</div>
+        <div class="letter-block" data-letter="F">F</div>
+        <div class="letter-block" data-letter="G">G</div>
+        <div class="letter-block" data-letter="H">H</div>
+        <div class="letter-block" data-letter="I">I</div>
+        <div class="letter-block" data-letter="J">J</div>
+        <div class="letter-block" data-letter="K">K</div>
+        <div class="letter-block" data-letter="L">L</div>
+        <div class="letter-block" data-letter="M">M</div>
+      </div>
+      <div class="column">
+        <!-- N-Z -->
+        <div class="letter-block" data-letter="N">N</div>
+        <div class="letter-block" data-letter="O">O</div>
+        <div class="letter-block" data-letter="P">P</div>
+        <div class="letter-block" data-letter="Q">Q</div>
+        <div class="letter-block" data-letter="R">R</div>
+        <div class="letter-block" data-letter="S">S</div>
+        <div class="letter-block" data-letter="T">T</div>
+        <div class="letter-block" data-letter="U">U</div>
+        <div class="letter-block" data-letter="V">V</div>
+        <div class="letter-block" data-letter="W">W</div>
+        <div class="letter-block" data-letter="X">X</div>
+        <div class="letter-block" data-letter="Y">Y</div>
+        <div class="letter-block" data-letter="Z">Z</div>
       </div>
     </div>
   </main>
@@ -67,9 +63,7 @@
       <div class="modal-content">
         <span class="close-modal">&times;</span>
         <h2>Search Contacts</h2>
-        <div class="search-input-wrapper">
-          <input type="text" id="search-input" placeholder="Enter name or phone">
-        </div>
+        <input type="text" id="search-input" placeholder="Enter name or phone">
         <div id="search-results"></div>
       </div>
     </div>
