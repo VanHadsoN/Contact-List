@@ -17,6 +17,11 @@ h1 {
     text-align: center;
 }
 
+h1 i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
 .form {
     display: flex;
     flex-direction: column;
@@ -42,6 +47,13 @@ h1 {
     padding: 10px;
     font-size: 1rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-buttons button i {
+    margin-right: 8px;
 }
 
 .list {
@@ -93,6 +105,14 @@ h1 {
     width: 100%; /* растягиваем по ширине родителя */
     min-height: 30px;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.letter-block i {
+    margin-right: 8px;
+    color: #555;
 }
 
 .modal {
@@ -127,6 +147,12 @@ h1 {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal i {
+    font-size: 24px;
+    color: #aaa;
     cursor: pointer;
 }
 
