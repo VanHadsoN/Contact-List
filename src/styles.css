@@ -1,5 +1,11 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --transition-speed: 0.3s;
+}
+
 body {
-    font-family: sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
@@ -11,15 +17,15 @@ body {
     background: #ffff;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 h1 {
     text-align: center;
 }
-
 h1 i {
     margin-right: 10px;
-    color: #007bff;
+    color: var(--primary-color);
 }
 
 .form {
@@ -33,6 +39,15 @@ h1 i {
 .form input {
     padding: 10px;
     font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    transition: all var(--transition-speed) ease;
+}
+
+.form input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
 }
 
 /* Кнопки в отдельной строке */
@@ -50,8 +65,19 @@ h1 i {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all var(--transition-speed) ease;
+    border-radius: 5px;
 }
 
+.form-buttons button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.form-buttons button:active {
+    transform: scale(0.95);
+}
+/* закончил здесь анимации */
 .form-buttons button i {
     margin-right: 8px;
 }
