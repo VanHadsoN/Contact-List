@@ -169,3 +169,9 @@ export function editContact(oldContact: Contact, newContactData: Contact): strin
     saveContactsToLocalStorage();
     return null; // при успешном редактировании
 }
+
+export function getContactsByLetter(contact: Contact[], letter: string): Contact[] {
+    return contacts.filter(contact =>
+        contact.name[0].toUpperCase() === letter.toUpperCase()
+    );
+}
