@@ -10,6 +10,7 @@ import {
     groupByLetter,
     updateLetterCounts,
     clearContacts,
+    getContactsByLetter,
     Contact
 } from './contacts/index';
 
@@ -213,3 +214,30 @@ searchInput.addEventListener('input', () => {
    searchResultsContainer.appendChild(resultItem);
   });
 });
+
+// обработчик модального окна для вывода контактов
+function createLetterContactModal(contacts: Contact[]) {
+    // создаём модальное окно
+    const modal = document.createElement('div');
+    modal.className = 'letter-contacts-modal';
+
+    // генерируем список контактов
+    const contactsList = contacts.map(contact => `
+        <div class="letter-contacts-item">
+          <div class="contact-details">
+            <div>Name: ${contact.name}</div>
+            <div>Vacancy: ${contact.vacancy}</div>
+            <div>Phone: ${contact.phone}</div>
+          </div>
+          <button class="delete-contact-btn" data-id="${contact.id}">x</button>
+        </div>
+    `).join('');
+
+    modal.innerHTML = `
+        <div class="letter-contacts-modal-content">
+          ${contactsList}
+        </div>>
+    `;
+
+    // добавляем в body
+}
