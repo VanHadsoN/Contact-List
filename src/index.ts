@@ -93,26 +93,21 @@ form.addEventListener('submit', (e) => {
         return;
     }
 
-    const result = addContact({name, vacancy, phone});
+    const newContact = addContact({
+        id: Date.now().toString(),
+        name,
+        vacancy,
+        phone
+    });
+    console.log('✅ Contact successfully added');
 
-    if (result === null) {
-        console.log('✅ Contact successfully added');
+    const groupedContacts = groupByLetter(contacts);
+    console.log('Grouped contacts:', groupedContacts);
 
-        const groupedContacts = groupByLetter(contacts);
-        console.log('Grouped contacts:', groupedContacts);
-
-        nameInput.value = '';
-        vacancyInput.value = '';
-        phoneInput.value = '';
-        updateLetterCounts(contacts);
-    } else {
-        console.warn('❌ Error:', result);
-        // показываем ошибку пользователю, если контакт не добавлен
-        const errorMsg = document.createElement('div');
-        errorMsg.classList.add('error-message');
-        errorMsg.textContent = result;
-        phoneInput.after(errorMsg);
-    }
+    nameInput.value = '';
+    vacancyInput.value = '';
+    phoneInput.value = '';
+    updateLetterCounts(contacts);
 });
 
 // инициализация при загрузке страницы
@@ -196,16 +191,13 @@ searchInput.addEventListener('input', () => {
            const editedPhone = (resultItem.querySelector('.edit-phone') as HTMLInputElement).value;
 
            const editResult = editContact(contact, {
+               id: contact.id, // добавляем существующий id
                name: editedName,
                vacancy: editedVacancy,
                phone: editedPhone
            });
 
-           if (editResult === null) {
-               // успешное редактирование
-               contactInfoSpan.textContent = `${editedName} - ${editedVacancy} - ${editedPhone}`;
-               updateLetterCounts(contacts);
-           } else {
+           if (editResult) {
                alert(editResult);
            }
        });
