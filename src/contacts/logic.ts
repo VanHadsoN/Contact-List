@@ -132,12 +132,14 @@ export function deleteContact(contactToDelete: Contact): void {
     const index = contacts.findIndex(
         contact =>
             contact.name === contactToDelete.name &&
-            contact.phone === contactToDelete.phone
+            contact.phone === contactToDelete.phone &&
+            contact.id === contactToDelete.id
     );
 
     if (index !== 1) {
         contacts.splice(index, 1);
         updateLetterCounts(contacts);
+        saveContactsToLocalStorage();
     }
 }
 
@@ -145,7 +147,8 @@ export function editContact(oldContact: Contact, newContactData: Contact): strin
     const index = contacts.findIndex(
         contact =>
             contact.name === oldContact.name &&
-            contact.phone === oldContact.phone
+            contact.phone === oldContact.phone &&
+            contact.id === oldContact.id
     );
 
     if (index === -1) return "Contact not found";
@@ -157,14 +160,16 @@ export function editContact(oldContact: Contact, newContactData: Contact): strin
     if (trimmedName.length === 0) return "Name cannot be empty";
     if (trimmedPhone.length === 0) return "Phone cannot be empty";
 
-    // обновляем контакт
+    // обновляем контакт, сохраняя прежний ID
     contacts[index] = {
+        id: oldContact.id,
         name: trimmedName,
         vacancy: newContactData.vacancy.trim(),
         phone: trimmedPhone
     };
 
     saveContactsToLocalStorage();
+    updateLetterCounts(contacts);
     return null; // при успешном редактировании
 }
 
