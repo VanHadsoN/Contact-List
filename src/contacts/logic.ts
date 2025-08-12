@@ -20,21 +20,13 @@ export function saveContactsToLocalStorage() {
 }
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
-export function addContact(name: string, vacancy: string, phone: string): Contact {
-    const newContact: Contact = {
-        id: Date.now().toString(), // генерируем уникальный ID
-        name,
-        vacancy,
-        phone
-    };
-
-    contacts.push(newContact); // явно добавляем в массив contacts
+export function addContact(contact: Contact): Contact {
+    contacts.push(contact); // явно добавляем в массив contacts
 
     // обновляем счётчики букв
     updateLetterCounts(contacts);
     saveContactsToLocalStorage();
-
-    return newContact;
+    return contact;
 }
 // функция полностью очищает список контактов
 export function clearContacts() {
