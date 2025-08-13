@@ -232,4 +232,37 @@ function createLetterContactModal(contacts: Contact[]) {
     `;
 
     // добавляем в body
+    document.body.appendChild(modal);
+
+    // обрабатываем закрытие
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            document.body.removeChild(modal);
+        }
+    });
+
+    // обрабатываем удаление контакта
+    modal.querySelectorAll('.delete-contact-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const contactId = (e.target as HTMLButtonElement).dataset.id;
+            // вызываем функцию удаления контакта
+            deleteContact(contactId);
+
+            // обновляем модальное окно
+            document.body.removeChild(modal);
+        });
+    });
 }
+
+// обрабатываем буквы алфавита
+document.querySelectorAll('.letter-block').forEach(block => {
+    block.addEventListener('click', () => {
+        const letter = block.getAttribute('data-letter');
+        if (letter) {
+            const letterContacts = getContactsByLetter(contacts, letter);
+            if (letterContacts.length > 0) {
+                createLetterContactModal(letterContacts);
+            }
+        }
+    });
+});
