@@ -245,11 +245,17 @@ function createLetterContactModal(contacts: Contact[]) {
     modal.querySelectorAll('.delete-contact-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const contactId = (e.target as HTMLButtonElement).dataset.id;
-            // вызываем функцию удаления контакта
-            deleteContact(contactId);
+
+            // находим контакт по ID
+            const contactToDelete = contacts.find(contact => contact.id === contactId);
+
+            if (contactToDelete) {
+                deleteContact(contactToDelete);
+            }
 
             // обновляем модальное окно
             document.body.removeChild(modal);
+            updateLetterCounts(contacts);
         });
     });
 }
