@@ -197,7 +197,11 @@ searchInput.addEventListener('input', () => {
                phone: editedPhone
            });
 
-           if (editResult) {
+           if (editResult === null) {
+               // успешное редактирование
+               contactInfoSpan.textContent = `${editedName} - ${editedVacancy} - ${editedPhone}`;
+               updateLetterCounts(contacts);
+           } else {
                alert(editResult);
            }
        });
