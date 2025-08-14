@@ -238,7 +238,10 @@ function createLetterContactModal(contacts: Contact[]) {
             <div>Vacancy: ${contact.vacancy}</div>
             <div>Phone: ${contact.phone}</div>
           </div>
-          <button class="delete-contact-btn" data-id="${contact.id}">x</button>
+          <div class="contact-actions">
+            <button class="delete-contact-btn" data-id="${contact.id}">Delete</button>
+            <button class="close-contact-btn" data-id="${contact.id}">x</button>
+          </div>          
         </div>
     `).join('');
 
@@ -251,28 +254,20 @@ function createLetterContactModal(contacts: Contact[]) {
     // добавляем в body
     document.body.appendChild(modal);
 
-    // обрабатываем закрытие
+    // обработчик закрытия модального окна
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             document.body.removeChild(modal);
         }
     });
 
-    // обрабатываем удаление контакта
-    modal.querySelectorAll('.delete-contact-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const contactId = (e.target as HTMLButtonElement).dataset.id;
+    // делегирование событий
+    modal.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
 
-            // находим контакт по ID
-            const contactToDelete = contacts.find(contact => contact.id === contactId);
+        // закрытие соответствующего контакта
+        if (target.classList.contains('.close-contact-btn')) {
 
-            if (contactToDelete) {
-                deleteContact(contactToDelete);
-            }
-
-            // обновляем модальное окно
-            document.body.removeChild(modal);
-            updateLetterCounts(contacts);
-        });
-    });
+        }
+    })
 }
