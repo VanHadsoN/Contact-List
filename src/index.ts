@@ -211,6 +211,19 @@ searchInput.addEventListener('input', () => {
   });
 });
 
+// обрабатываем буквы алфавита
+document.querySelectorAll('.letter-block').forEach(block => {
+    block.addEventListener('click', () => {
+        const letter = block.getAttribute('data-letter');
+        if (letter) {
+            const letterContacts = getContactsByLetter(contacts, letter);
+            if (letterContacts.length > 0) {
+                createLetterContactModal(letterContacts);
+            }
+        }
+    });
+});
+
 // обработчик модального окна для вывода контактов
 function createLetterContactModal(contacts: Contact[]) {
     // создаём модальное окно
@@ -263,16 +276,3 @@ function createLetterContactModal(contacts: Contact[]) {
         });
     });
 }
-
-// обрабатываем буквы алфавита
-document.querySelectorAll('.letter-block').forEach(block => {
-    block.addEventListener('click', () => {
-        const letter = block.getAttribute('data-letter');
-        if (letter) {
-            const letterContacts = getContactsByLetter(contacts, letter);
-            if (letterContacts.length > 0) {
-                createLetterContactModal(letterContacts);
-            }
-        }
-    });
-});
