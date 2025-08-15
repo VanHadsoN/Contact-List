@@ -232,7 +232,7 @@ function createLetterContactModal(contacts: Contact[]) {
 
     // генерируем список контактов
     const contactsList = contacts.map(contact => `
-        <div class="letter-contact-item">
+        <div class="letter-contact-item" data-id="${contact.id}">
           <div class="contact-details">
             <div>Name: ${contact.name}</div>
             <div>Vacancy: ${contact.vacancy}</div>
@@ -280,8 +280,7 @@ function createLetterContactModal(contacts: Contact[]) {
 
         // удаление контакта
         if (target.classList.contains('delete-contact-btn')) {
-            const contactItem = target.closest('.letter-contact-item');
-            const contactId = contactItem?.getAttribute('data-id');
+            const contactId = (target as HTMLButtonElement).dataset.id;
 
             // находим контакт по ID
             const contactToDelete = contacts.find(contact => contact.id === contactId);
@@ -289,7 +288,8 @@ function createLetterContactModal(contacts: Contact[]) {
             if (contactToDelete) {
                 deleteContact(contactToDelete);
 
-                // удаляем элемент из DOM
+                // находим и удаляем элемент с соответствующим ID
+                const contactItem = modal.querySelector(`.letter-contact-item[data-id="${contactId}"]`);
                 contactItem?.remove();
 
                 // обновляем счетчик букв
