@@ -232,7 +232,7 @@ function createLetterContactModal(contacts: Contact[]) {
 
     // генерируем список контактов
     const contactsList = contacts.map(contact => `
-        <div class="letter-contacts-item">
+        <div class="letter-contact-item">
           <div class="contact-details">
             <div>Name: ${contact.name}</div>
             <div>Vacancy: ${contact.vacancy}</div>
@@ -248,7 +248,7 @@ function createLetterContactModal(contacts: Contact[]) {
     modal.innerHTML = `
         <div class="letter-contacts-modal-content">
           ${contactsList}
-        </div>>
+        </div>
     `;
 
     // добавляем в body
@@ -266,8 +266,40 @@ function createLetterContactModal(contacts: Contact[]) {
         const target = e.target as HTMLElement;
 
         // закрытие соответствующего контакта
-        if (target.classList.contains('.close-contact-btn')) {
+        if (target.classList.contains('close-contact-btn')) {
+            const contactItem = target.closest('.letter-contact-item');
+            if (contactItem) {
+                contactItem.remove();
 
+                // если больше нет контактов, закрываем модальное окно
+                if (modal.querySelectorAll('.letter-contact-item').length === 0) {
+                    document.body.removeChild(modal);
+                }
+            }
         }
-    })
+
+        // удаление контакта
+        if (target.classList.contains('delete-contact-btn')) {
+            const contactItem = target.closest('.letter-contact-item');
+            const contactId = contactItem?.getAttribute('data-id');
+
+            // находим контакт по ID
+            const contactToDelete = contacts.find(contact => contact.id === contactId);
+
+            if (contactToDelete) {
+                deleteContact(contactToDelete);
+
+                // удаляем элемент из DOM
+                contactItem?.remove();
+
+                // обновляем счетчик букв
+                updateLetterCounts(contacts);
+
+                // если больше нет контактов, закрываем модальное окно
+                if (modal.querySelectorAll('.letter-contact-item').length === 0) {
+                    document.body.removeChild(modal);
+                }
+            }
+        }
+    });
 }
