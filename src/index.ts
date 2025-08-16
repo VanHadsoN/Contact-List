@@ -295,6 +295,18 @@ function createLetterContactModal(contacts: Contact[]) {
                 // обновляем счетчик букв
                 updateLetterCounts(contacts);
 
+                // явно обновляем блоки с буквами
+                document.querySelectorAll('.letter-block').forEach(block => {
+                    const letter = block.getAttribute('data-letter');
+                    if (letter) {
+                        const letterContacts = getContactsByLetter(contacts, letter);
+                        const countSpan = block.querySelector('.letter-count');
+                        if (countSpan) {
+                            countSpan.textContent = letterContacts.length.toString();
+                        }
+                    }
+                });
+
                 // если больше нет контактов, закрываем модальное окно
                 if (modal.querySelectorAll('.letter-contact-item').length === 0) {
                     document.body.removeChild(modal);
