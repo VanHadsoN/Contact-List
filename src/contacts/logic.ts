@@ -5,7 +5,9 @@ import type { Contact, ContactsMap } from "./types";
 export function loadContactsFromLocalStorage() {
     const savedContacts = localStorage.getItem('contacts');
     if (savedContacts) {
-        contacts.splice(0, contacts.length, ...JSON.parse(savedContacts));
+        // полная очистка массива и заполнение из LocalStorage
+        contacts.length = 0; // очищаем массив
+        contacts.push(...JSON.parse(savedContacts));
         console.log('Contacts loaded from localStorage:', contacts);
         updateLetterCounts(contacts);
     } else {
@@ -16,7 +18,7 @@ export function loadContactsFromLocalStorage() {
 // сохранение контактов в LocalStorage
 export function saveContactsToLocalStorage() {
     localStorage.setItem('contacts', JSON.stringify(contacts));
-    console.log('Contacts are saved in localStorage:', contacts);
+    console.log('Contacts are saved in localStorage:', contacts.length);
 }
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
@@ -60,48 +62,49 @@ export function groupByLetter(list: Contact[]): ContactsMap {
 
 // функция для обновления счетчиков букв
 export function updateLetterCounts(contacts: Contact[]) {
-    console.log('Updating letter counts:', contacts.length);
+    console.log('Updating letter counts. Total contacts:', contacts.length);
+
     // получаем все блоки букв
     const letterBlocks = document.querySelectorAll('.alphabet-list .letter-block');
 
-    console.log('Total letter blocks:', letterBlocks.length);
-
-
-    // сбрасываем текст для всех блоков до изначального состояния
-    letterBlocks.forEach((block) => {
-        const letter = block.getAttribute('data-letter');
-        block.textContent = letter || '';
-    });
-
-    if (contacts.length === 0) { // Если список контактов пустой - выходим
+    // если контактов нет - сбрасываем все блоки
+    if (contacts.length === 0) {
+        letterBlocks.forEach((block) => {
+            const letter = block.getAttribute('data-letter');
+            block.textContent = letter || '';
+        });
         return;
     }
 
-    // контакты группируются по первой букве
-    const groupedContacts = contacts.reduce((acc, contact) => {
+    // // контакты группируются по первой букве
+    // const groupedContacts = contacts.reduce((acc, contact) => {
+    //     const firstLetter = contact.name[0].toUpperCase();
+    //     console.log('Processing contact:', contact.name, 'First letter:', firstLetter);
+    //
+    //     if (!acc[firstLetter]) {
+    //         acc[firstLetter] = 0;
+    //     }
+    //     acc[firstLetter]++;
+    //     return acc;
+    // }, {} as Record<string, number>);
+    //
+    // console.log('Grouped contacts:', groupedContacts);
+
+    // подсчет контактов по буквам
+    const letterCounts: Record<string, number> = {};
+    contacts.forEach(contact => {
         const firstLetter = contact.name[0].toUpperCase();
-        console.log('Processing contact:', contact.name, 'First letter:', firstLetter);
-
-        if (!acc[firstLetter]) {
-            acc[firstLetter] = 0;
-        }
-        acc[firstLetter]++;
-        return acc;
-    }, {} as Record<string, number>);
-
-    console.log('Grouped contacts:', groupedContacts);
+        letterCounts[firstLetter] = (letterCounts[firstLetter] || 0) + 1;
+    });
 
     // обновляются блоки  буквами
-    Object.entries(groupedContacts).forEach(([letter, count]) => {
-        const letterBlock = document.querySelector(`.alphabet-list .letter-block[data-letter="${letter}"]`);
-
-        if (letterBlock) {
-            console.log(`Updating letter block for ${letter} with count ${count}`);
-            letterBlock.textContent = `${letter} (${count})`;
-        } else {
-            console.warn(`No letter blocks found for letter ${letter}`);
+    letterBlocks.forEach((block) => {
+        const letter = block.getAttribute('data-letter');
+        if (letter) {
+            const count = letterCounts[letter] || 0;
+            block.textContent = count > 0 ? `${letter} (${count})` : letter;
         }
-    });
+    })
 }
 
 export function searchContacts(query: string): Contact[] {
@@ -121,17 +124,29 @@ export function searchContacts(query: string): Contact[] {
 }
 
 export function deleteContact(contactToDelete: Contact): void {
+    console.log('Trying to delete contact:', contactToDelete);
+    console.log('Current contacts before deletion:', contacts);
+
     const index = contacts.findIndex(
         contact =>
-            contact.name === contactToDelete.name &&
-            contact.phone === contactToDelete.phone &&
+            // contact.name === contactToDelete.name &&
+            // contact.phone === contactToDelete.phone &&
             contact.id === contactToDelete.id
     );
 
+    console.log('Contact index:', index);
+
     if (index !== -1) {
+        console.log('Contact found. Removing...');
         contacts.splice(index, 1);
+        console.log('Contacts after deletion:', contacts.length);
+
+        // явное обновление LocalStorage
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+
         updateLetterCounts(contacts);
-        saveContactsToLocalStorage();
+    } else {
+        console.warn('Contact not found for deletion');
     }
 }
 
