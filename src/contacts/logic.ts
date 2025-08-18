@@ -3,24 +3,34 @@ import type { Contact, ContactsMap } from "./types";
 
 // загрузка контактов из LocalStorage
 export function loadContactsFromLocalStorage() {
+    console.log('🔍 Loading contacts from localStorage');
+
     const savedContacts = localStorage.getItem('contacts');
-    console.log('Loading contacts from localStorage');
+
     console.log('Saved contacts:', savedContacts);
 
+    // полная очистка массива
+    contacts.length = 0;
+
     if (savedContacts) {
-        const parsedContacts = JSON.parse(savedContacts);
+        try {
+            const parsedContacts = JSON.parse(savedContacts);
+            console.log('Parsed contacts:', parsedContacts);
 
-        // полная очистка массива перед загрузкой
-        contacts.length = 0;
-
-        // добавляем только parsed контакты
-        contacts.push(...parsedContacts);
-
-        console.log('Contacts after loading:', contacts);
-        updateLetterCounts(contacts);
+            // добавляем контакты только если они есть
+            if (Array.isArray(parsedContacts) && parsedContacts.length > 0) {
+                contacts.push(...parsedContacts);
+            }
+            console.log('Contacts after loading:', contacts);
+            console.log('Contacts length:', contacts.length);
+        } catch (error) {
+            console.log('Error parsing contacts:', error);
+            localStorage.removeItem('contacts');
+        }
     } else {
-        console.log('There are no contacts in localStorage');
+        console.log('No contacts in localStorage');
     }
+    updateLetterCounts(contacts);
 }
 
 // сохранение контактов в LocalStorage
@@ -35,11 +45,18 @@ export function saveContactsToLocalStorage() {
 
 // функция добавляет новый контакт, валидирует и проверяет дубликаты
 export function addContact(contact: Contact): Contact {
+    console.log('Adding new contact:', contacts);
+    console.log('Current contacts before add:', contacts);
+
     contacts.push(contact); // явно добавляем в массив contacts
 
+    console.log('Contacts after add:', contacts);
+    console.log('Contacts length:', contacts.length);
+
     // обновляем счётчики букв
-    updateLetterCounts(contacts);
     saveContactsToLocalStorage();
+    updateLetterCounts(contacts);
+
     return contact;
 }
 // функция полностью очищает список контактов
