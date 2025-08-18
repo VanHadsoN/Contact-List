@@ -4,11 +4,19 @@ import type { Contact, ContactsMap } from "./types";
 // загрузка контактов из LocalStorage
 export function loadContactsFromLocalStorage() {
     const savedContacts = localStorage.getItem('contacts');
+    console.log('Loading contacts from localStorage');
+    console.log('Saved contacts:', savedContacts);
+
     if (savedContacts) {
-        // полная очистка массива и заполнение из LocalStorage
-        contacts.length = 0; // очищаем массив
-        contacts.push(...JSON.parse(savedContacts));
-        console.log('Contacts loaded from localStorage:', contacts);
+        const parsedContacts = JSON.parse(savedContacts);
+
+        // полная очистка массива перед загрузкой
+        contacts.length = 0;
+
+        // добавляем только parsed контакты
+        contacts.push(...parsedContacts);
+
+        console.log('Contacts after loading:', contacts);
         updateLetterCounts(contacts);
     } else {
         console.log('There are no contacts in localStorage');
@@ -63,6 +71,7 @@ export function groupByLetter(list: Contact[]): ContactsMap {
 // функция для обновления счетчиков букв
 export function updateLetterCounts(contacts: Contact[]) {
     console.log('Updating letter counts. Total contacts:', contacts.length);
+    console.log('Actual contacts:', contacts);
 
     // получаем все блоки букв
     const letterBlocks = document.querySelectorAll('.alphabet-list .letter-block');
@@ -97,7 +106,7 @@ export function updateLetterCounts(contacts: Contact[]) {
         letterCounts[firstLetter] = (letterCounts[firstLetter] || 0) + 1;
     });
 
-    // обновляются блоки  буквами
+    // обновляются блоки с буквами
     letterBlocks.forEach((block) => {
         const letter = block.getAttribute('data-letter');
         if (letter) {
@@ -126,11 +135,13 @@ export function searchContacts(query: string): Contact[] {
 export function deleteContact(contactToDelete: Contact): void {
     console.log('Trying to delete contact:', contactToDelete);
     console.log('Current contacts before deletion:', contacts);
+    console.log('Contacts length:', contacts.length);
 
+    // явный поиск по всем параметрам
     const index = contacts.findIndex(
         contact =>
-            // contact.name === contactToDelete.name &&
-            // contact.phone === contactToDelete.phone &&
+            contact.name === contactToDelete.name &&
+            contact.phone === contactToDelete.phone &&
             contact.id === contactToDelete.id
     );
 
@@ -138,8 +149,11 @@ export function deleteContact(contactToDelete: Contact): void {
 
     if (index !== -1) {
         console.log('Contact found. Removing...');
+
+        // удаляем контакт
         contacts.splice(index, 1);
-        console.log('Contacts after deletion:', contacts.length);
+        console.log('Contacts after deletion:', contacts);
+        console.log('Contacts length after deletion:', contacts.length);
 
         // явное обновление LocalStorage
         localStorage.setItem('contacts', JSON.stringify(contacts));
