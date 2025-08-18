@@ -23,6 +23,7 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 
 document.addEventListener('DOMContentLoaded', () => {
     loadContactsFromLocalStorage(); // загружаем контакты при старте приложения
+    updateLetterCounts(contacts);
 });
 
 form.addEventListener('submit', (e) => {
