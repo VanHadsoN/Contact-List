@@ -25,6 +25,10 @@ export function loadContactsFromLocalStorage() {
 
 // сохранение контактов в LocalStorage
 export function saveContactsToLocalStorage() {
+    console.log('Saving contacts to localStorage');
+    console.log('Contacts to save:', contacts);
+    console.log('Contacts length:', contacts.length);
+
     localStorage.setItem('contacts', JSON.stringify(contacts));
     console.log('Contacts are saved in localStorage:', contacts.length);
 }
@@ -140,8 +144,8 @@ export function deleteContact(contactToDelete: Contact): void {
     // явный поиск по всем параметрам
     const index = contacts.findIndex(
         contact =>
-            contact.name === contactToDelete.name &&
-            contact.phone === contactToDelete.phone &&
+            // contact.name === contactToDelete.name &&
+            // contact.phone === contactToDelete.phone &&
             contact.id === contactToDelete.id
     );
 
@@ -156,7 +160,7 @@ export function deleteContact(contactToDelete: Contact): void {
         console.log('Contacts length after deletion:', contacts.length);
 
         // явное обновление LocalStorage
-        localStorage.setItem('contacts', JSON.stringify(contacts));
+        saveContactsToLocalStorage();
 
         updateLetterCounts(contacts);
     } else {
