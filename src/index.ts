@@ -24,6 +24,9 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 document.addEventListener('DOMContentLoaded', () => {
     loadContactsFromLocalStorage(); // загружаем контакты при старте приложения
     updateLetterCounts(contacts);
+
+    console.log('Initial contacts:', contacts);
+    console.log('Initial contacts length:', contacts.length);
 });
 
 form.addEventListener('submit', (e) => {
@@ -108,11 +111,6 @@ form.addEventListener('submit', (e) => {
     nameInput.value = '';
     vacancyInput.value = '';
     phoneInput.value = '';
-    updateLetterCounts(contacts);
-});
-
-// инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
     updateLetterCounts(contacts);
 });
 
