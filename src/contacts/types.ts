@@ -1,6 +1,5 @@
 // тип одного контакта
 export type Contact = {
-    id: string; // уникальный идентификатор для контакта
     name: string;
     vacancy: string;
     phone: string;

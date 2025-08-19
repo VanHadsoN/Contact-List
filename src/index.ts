@@ -2,7 +2,6 @@ import './styles.css';
 
 import {
     contacts,
-    loadContactsFromLocalStorage,
     addContact,
     searchContacts,
     deleteContact,
@@ -10,7 +9,7 @@ import {
     groupByLetter,
     updateLetterCounts,
     clearContacts,
-    getContactsByLetter,
+    loadContactsFromLocalStorage,
     Contact
 } from './contacts/index';
 
@@ -22,7 +21,8 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 // const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadContactsFromLocalStorage(); // загружаем контакты при старте приложения
+    loadContactsFromLocalStorage(); // загрузка контактов при старте приложения
+    updateLetterCounts(contacts);
 });
 
 form.addEventListener('submit', (e) => {
@@ -93,26 +93,26 @@ form.addEventListener('submit', (e) => {
         return;
     }
 
-    const newContact = addContact({
-        id: Date.now().toString(),
-        name,
-        vacancy,
-        phone
-    });
-    console.log('✅ Contact successfully added');
+    const result = addContact({name, vacancy, phone});
 
-    const groupedContacts = groupByLetter(contacts);
-    console.log('Grouped contacts:', groupedContacts);
+    if (result === null) {
+        console.log('✅ Contact successfully added');
 
-    nameInput.value = '';
-    vacancyInput.value = '';
-    phoneInput.value = '';
-    updateLetterCounts(contacts);
-});
+        const groupedContacts = groupByLetter(contacts);
+        console.log('Grouped contacts:', groupedContacts);
 
-// инициализация при загрузке страницы
-document.addEventListener('DOMContentLoaded', () => {
-    updateLetterCounts(contacts);
+        nameInput.value = '';
+        vacancyInput.value = '';
+        phoneInput.value = '';
+        updateLetterCounts(contacts);
+    } else {
+        console.warn('❌ Error:', result);
+        // показываем ошибку пользователю, если контакт не добавлен
+        const errorMsg = document.createElement('div');
+        errorMsg.classList.add('error-message');
+        errorMsg.textContent = result;
+        phoneInput.after(errorMsg);
+    }
 });
 
 clearButton.addEventListener('click', () => {
@@ -191,7 +191,6 @@ searchInput.addEventListener('input', () => {
            const editedPhone = (resultItem.querySelector('.edit-phone') as HTMLInputElement).value;
 
            const editResult = editContact(contact, {
-               id: contact.id, // добавляем существующий id
                name: editedName,
                vacancy: editedVacancy,
                phone: editedPhone
@@ -210,95 +209,3 @@ searchInput.addEventListener('input', () => {
    searchResultsContainer.appendChild(resultItem);
   });
 });
-
-// обрабатываем буквы алфавита
-document.querySelectorAll('.letter-block').forEach(block => {
-    block.addEventListener('click', () => {
-        const letter = block.getAttribute('data-letter');
-        if (letter) {
-            const letterContacts = getContactsByLetter(contacts, letter);
-            if (letterContacts.length > 0) {
-                createLetterContactModal(letterContacts);
-            }
-        }
-    });
-});
-
-function createLetterContactModal(contacts: Contact[]) {
-    // создаём модальное окно
-    const modal = document.createElement('div');
-    modal.className = 'letter-contacts-modal';
-
-    // генерируем список контактов
-    const contactsList = contacts.map(contact => `
-        <div class="letter-contact-item" data-id="${contact.id}">
-          <div class="contact-details">
-            <div>Name: ${contact.name}</div>
-            <div>Vacancy: ${contact.vacancy}</div>
-            <div>Phone: ${contact.phone}</div>
-          </div>
-          <div class="contact-actions">
-            <button class="delete-contact-btn" data-id="${contact.id}">Delete</button>
-            <button class="close-contact-btn">x</button>
-          </div>          
-        </div>
-    `).join('');
-
-    modal.innerHTML = `
-        <div class="letter-contacts-modal-content">
-          ${contactsList}
-        </div>
-    `;
-
-    // добавляем в body
-    document.body.appendChild(modal);
-
-    // обработчик закрытия модального окна
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            document.body.removeChild(modal);
-        }
-    });
-
-    // делегирование событий
-    modal.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-
-        // закрытие соответствующего контакта
-        if (target.classList.contains('close-contact-btn')) {
-            const contactItem = target.closest('.letter-contact-item');
-            if (contactItem) {
-                contactItem.remove();
-
-                // если больше нет контактов, закрываем модальное окно
-                if (modal.querySelectorAll('.letter-contact-item').length === 0) {
-                    document.body.removeChild(modal);
-                }
-            }
-        }
-
-        // удаление контакта
-        if (target.classList.contains('delete-contact-btn')) {
-            const contactId = (target as HTMLButtonElement).dataset.id;
-
-            // находим контакт по ID
-            const contactToDelete = contacts.find(contact => contact.id === contactId);
-
-            if (contactToDelete) {
-                deleteContact(contactToDelete);
-
-                // Находим и удаляем элемент с соответствующим ID
-                const contactItem = modal.querySelector(`.letter-contact-item[data-id="${contactId}"]`);
-                contactItem?.remove();
-
-                // обновляем счетчик букв
-                updateLetterCounts(contacts);
-
-                // если больше нет контактов, закрываем модальное окно
-                if (modal.querySelectorAll('.letter-contact-item').length === 0) {
-                    document.body.removeChild(modal);
-                }
-            }
-        }
-    });
-}
