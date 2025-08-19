@@ -147,7 +147,7 @@ export function deleteContact(contactToDelete: Contact): void {
             contact.phone === contactToDelete.phone
     );
 
-    if (index !== 1) {
+    if (index !== -1) {
         contacts.splice(index, 1);
         updateLetterCounts(contacts);
     }
