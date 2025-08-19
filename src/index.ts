@@ -194,10 +194,13 @@ searchInput.addEventListener('input', () => {
     // логика удаления
     const deleteButton = resultItem.querySelector('.delete-btn')!;
     deleteButton.addEventListener('click', () => {
+        // подтверждение перед удалением контакта
         if (window.confirm(`Are you sure you want to delete ${contact.name}?`)) {
             deleteContact(contact);
             resultItem.remove();
             updateLetterCounts(contacts);
+            // сохраняем в localStorage после удаления
+            saveContactsToLocalStorage();
         }
     });
 
