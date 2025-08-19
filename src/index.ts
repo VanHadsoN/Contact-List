@@ -23,10 +23,6 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 
 document.addEventListener('DOMContentLoaded', () => {
     loadContactsFromLocalStorage(); // загружаем контакты при старте приложения
-    updateLetterCounts(contacts);
-
-    console.log('Initial contacts:', contacts);
-    console.log('Initial contacts length:', contacts.length);
 });
 
 form.addEventListener('submit', (e) => {
@@ -111,6 +107,11 @@ form.addEventListener('submit', (e) => {
     nameInput.value = '';
     vacancyInput.value = '';
     phoneInput.value = '';
+    updateLetterCounts(contacts);
+});
+
+// инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
     updateLetterCounts(contacts);
 });
 
@@ -223,7 +224,6 @@ document.querySelectorAll('.letter-block').forEach(block => {
     });
 });
 
-// обработчик модального окна для вывода контактов
 function createLetterContactModal(contacts: Contact[]) {
     // создаём модальное окно
     const modal = document.createElement('div');
@@ -239,7 +239,7 @@ function createLetterContactModal(contacts: Contact[]) {
           </div>
           <div class="contact-actions">
             <button class="delete-contact-btn" data-id="${contact.id}">Delete</button>
-            <button class="close-contact-btn" data-id="${contact.id}">x</button>
+            <button class="close-contact-btn">x</button>
           </div>          
         </div>
     `).join('');
@@ -287,24 +287,12 @@ function createLetterContactModal(contacts: Contact[]) {
             if (contactToDelete) {
                 deleteContact(contactToDelete);
 
-                // находим и удаляем элемент с соответствующим ID
+                // Находим и удаляем элемент с соответствующим ID
                 const contactItem = modal.querySelector(`.letter-contact-item[data-id="${contactId}"]`);
                 contactItem?.remove();
 
                 // обновляем счетчик букв
                 updateLetterCounts(contacts);
-
-                // явно обновляем блоки с буквами
-                document.querySelectorAll('.letter-block').forEach(block => {
-                    const letter = block.getAttribute('data-letter');
-                    if (letter) {
-                        const letterContacts = getContactsByLetter(contacts, letter);
-                        const countSpan = block.querySelector('.letter-count');
-                        if (countSpan) {
-                            countSpan.textContent = letterContacts.length.toString();
-                        }
-                    }
-                });
 
                 // если больше нет контактов, закрываем модальное окно
                 if (modal.querySelectorAll('.letter-contact-item').length === 0) {
