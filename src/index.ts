@@ -193,10 +193,12 @@ searchInput.addEventListener('input', () => {
         `;
     // логика удаления
     const deleteButton = resultItem.querySelector('.delete-btn')!;
-        deleteButton.addEventListener('click', () => {
-        deleteContact(contact); // передаем конкретный контакт для удаления
-        resultItem.remove();
-        updateLetterCounts(contacts);
+    deleteButton.addEventListener('click', () => {
+        if (window.confirm(`Are you sure you want to delete ${contact.name}?`)) {
+            deleteContact(contact);
+            resultItem.remove();
+            updateLetterCounts(contacts);
+        }
     });
 
    // логика редактирования
