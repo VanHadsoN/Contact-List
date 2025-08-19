@@ -3,13 +3,23 @@ import type { Contact, ContactsMap } from "./types";
 
 // загрузка контактов из LocalStorage
 export function loadContactsFromLocalStorage() {
-    const savedContacts = localStorage.getItem('contacts');
-    if (savedContacts) {
-        contacts.splice(0, contacts.length, ...JSON.parse(savedContacts));
-        console.log('Contacts loaded from localStorage:', contacts);
-        updateLetterCounts(contacts);
-    } else {
-        console.log('There are no contacts in localStorage');
+    try {
+        const savedContacts = localStorage.getItem('contacts');
+        if (savedContacts) {
+            const parsedContacts = JSON.parse(savedContacts);
+            if (Array.isArray(parsedContacts)) {
+                contacts.splice(0, contacts.length, ...parsedContacts);
+                console.log('Contacts loaded from localStorage:', contacts);
+                updateLetterCounts(contacts);
+            } else {
+                console.error('Error: Expected an array from localStorage but got:', typeof parsedContacts);
+            }
+        } else {
+            console.log('There are no contacts in localStorage');
+        }
+    } catch (error) {
+        console.error('Error loading contacts from localStorage:', error);
+        alert('An error occurred while loading contacts');
     }
 }
 
