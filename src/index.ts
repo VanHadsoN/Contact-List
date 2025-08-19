@@ -10,7 +10,7 @@ import {
     updateLetterCounts,
     clearContacts,
     loadContactsFromLocalStorage,
-    Contact
+    Contact, saveContactsToLocalStorage
 } from './contacts/index';
 
 const form = document.getElementById('contact-form') as HTMLFormElement;
@@ -21,8 +21,17 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 // const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadContactsFromLocalStorage(); // загрузка контактов при старте приложения
-    updateLetterCounts(contacts);
+    try {
+        loadContactsFromLocalStorage(); // загрузка контактов при старте приложения
+        updateLetterCounts(contacts);
+    } catch (error) {
+        console.error('Error during initial load:', error);
+        // отображение ошибки пользователю
+        const errorElement = document.createElement('div');
+        errorElement.textContent = 'An error occurred while loading contacts. Please refresh the page or check your browser settings.';
+        errorElement.style.color = 'red';
+        document.body.insertBefore(errorElement, document.body.firstChild);
+    }
 });
 
 form.addEventListener('submit', (e) => {
@@ -93,31 +102,50 @@ form.addEventListener('submit', (e) => {
         return;
     }
 
-    const result = addContact({name, vacancy, phone});
+    try {
+        const result = addContact({name, vacancy, phone});
 
-    if (result === null) {
-        console.log('✅ Contact successfully added');
+        if (result === null) {
+            console.log('✅ Contact successfully added');
 
-        const groupedContacts = groupByLetter(contacts);
-        console.log('Grouped contacts:', groupedContacts);
+            const groupedContacts = groupByLetter(contacts);
+            console.log('Grouped contacts:', groupedContacts);
 
-        nameInput.value = '';
-        vacancyInput.value = '';
-        phoneInput.value = '';
-        updateLetterCounts(contacts);
-    } else {
-        console.warn('❌ Error:', result);
-        // показываем ошибку пользователю, если контакт не добавлен
+            nameInput.value = '';
+            vacancyInput.value = '';
+            phoneInput.value = '';
+            updateLetterCounts(contacts);
+        } else {
+            console.warn('❌ Error:', result);
+            // показываем ошибку пользователю, если контакт не добавлен
+            const errorMsg = document.createElement('div');
+            errorMsg.classList.add('error-message');
+            errorMsg.textContent = result;
+            phoneInput.after(errorMsg);
+        }
+    } catch (error) {
+        console.error('Error adding contact:', error);
+        // Отображение ошибки пользователю
         const errorMsg = document.createElement('div');
         errorMsg.classList.add('error-message');
-        errorMsg.textContent = result;
-        phoneInput.after(errorMsg);
+        errorMsg.textContent = 'An error occurred while adding the contact. Please try again.';
+        form.appendChild(errorMsg);
     }
 });
 
 clearButton.addEventListener('click', () => {
-    clearContacts(); // вызываем функцию очистки контактов
-    updateLetterCounts(contacts); // обновляем счетчики букв после очистки
+    try {
+        clearContacts(); // вызываем функцию очистки контактов
+        updateLetterCounts(contacts); // обновляем счетчики букв после очистки
+        saveContactsToLocalStorage();
+    } catch (error) {
+        console.error('Error clearing contacts:', error);
+        // Отображение ошибки пользователю
+        const errorElement = document.createElement('div');
+        errorElement.classList.add('error-message');
+        errorElement.textContent = 'An error occurred while clearing contacts. Please try again.';
+        form.appendChild(errorElement);
+    }
 });
 
 // модальное окно
