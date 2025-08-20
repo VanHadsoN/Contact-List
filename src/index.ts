@@ -10,7 +10,8 @@ import {
     updateLetterCounts,
     clearContacts,
     loadContactsFromLocalStorage,
-    Contact, saveContactsToLocalStorage
+    saveContactsToLocalStorage,
+    Contact
 } from './contacts/index';
 
 const form = document.getElementById('contact-form') as HTMLFormElement;
@@ -240,4 +241,62 @@ searchInput.addEventListener('input', () => {
 
    searchResultsContainer.appendChild(resultItem);
   });
+
+    // получаем модальное окно и элемент для отображения контактов
+    const letterContactsModal = document.getElementById('letter-contacts-modal')!;
+    const letterContactsList = document.getElementById('letter-contacts-list')!;
+    const modalLetter = document.getElementById('modal-letter')!;
+
+    // функция для отображения модального окна с контактами по букве
+    function showContactsByLetter(letter: string) {
+        const filteredContacts = contacts.filter(contact => contact.name[0].toUpperCase() === letter);
+
+        modalLetter.textContent = letter; // устанавливаем букву в заголовок h2 модального окна
+        letterContactsList.innerHTML = ''; // очистка предыдущего содержимого
+
+        if (filteredContacts.length === 0) {
+            letterContactsList.innerHTML = '<p>No contacts found.</p>';
+        } else {
+            filteredContacts.forEach(contact => {
+                const contactItem = document.createElement('div');
+                contactItem.classList.add('letter-contacts-item');
+                contactItem.innerHTML = `
+                    <span>${contact.name} - ${contact.vacancy} - ${contact.phone}</span>
+                    <button class="delete-contact-btn"><i class="fas fa-trash"></i></button>
+                `;
+                const deleteButton = contactItem.querySelector('.delete-contact-btn')!;
+                deleteButton.addEventListener('click', () => {
+                    if (window.confirm(`Are you sure you want to delete ${contact.name}?`)) {
+                        deleteContact(contact);
+                        contactItem.remove();
+                        updateLetterCounts(contacts);
+                        saveContactsToLocalStorage();
+                        // проверяем, остались ли еще контакты после удаления
+                        if (letterContactsList.children.length === 0) {
+                            letterContactsModal.classList.add('hidden');
+                        }
+                    }
+                });
+                letterContactsList.appendChild(contactItem);
+            });
+        }
+
+        // открытие модального окна
+        letterContactsModal.classList.remove('hidden');
+    }
+
+    // закрытие модального окна
+    document.querySelector('.close-modal')!.addEventListener('click', () => {
+        letterContactsModal.classList.add('hidden');
+    });
+
+    // обработка кликов на блоки с буквами
+    document.querySelectorAll('.letter-block').forEach(block => {
+        block.addEventListener('click', (e) => {
+            const letter = (e.target as HTMLElement).textContent?.trim();
+            if (letter && letter.length === 1) {
+                showContactsByLetter(letter.toUpperCase());
+            }
+        });
+    });
 });
