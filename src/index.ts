@@ -22,6 +22,12 @@ const clearButton = document.getElementById('clear-btn') as HTMLButtonElement; /
 // const addButton = document.querySelector<HTMLButtonElement>('#add-btn')!;
 
 document.addEventListener('DOMContentLoaded', () => {
+    const letterContactsModal = document.getElementById('letter-contacts-modal')!;
+    const letterContactsList = document.getElementById('letter-contacts-list')!;
+    const modalLetter = document.getElementById('modal-letter')!;
+    console.log('letterContactsModal:', letterContactsModal);
+    console.log('letterContactsList:', letterContactsList);
+    console.log('modalLetter:', modalLetter);
     try {
         loadContactsFromLocalStorage(); // загрузка контактов при старте приложения
         updateLetterCounts(contacts);
@@ -243,12 +249,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // получаем модальное окно и элемент для отображения контактов
-    const letterContactsModal = document.getElementById('letter-contacts-modal')!;
-    const letterContactsList = document.getElementById('letter-contacts-list')!;
-    const modalLetter = document.getElementById('modal-letter')!;
+    // const letterContactsModal = document.getElementById('letter-contacts-modal')!;
+    // const letterContactsList = document.getElementById('letter-contacts-list')!;
+    // const modalLetter = document.getElementById('modal-letter')!;
 
     // функция для отображения модального окна с контактами по букве
     function showContactsByLetter(letter: string) {
+        console.log('Function showContactsByLetter called with letter:', letter);
         const filteredContacts = contacts.filter(contact => contact.name[0].toUpperCase() === letter);
 
         modalLetter.textContent = letter; // устанавливаем букву в заголовок h2 модального окна
