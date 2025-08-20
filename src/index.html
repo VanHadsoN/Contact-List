@@ -68,6 +68,7 @@
       </div>
     </div>
   </main>
+  <!-- модальное окно для кнопки поиска Search -->
     <div id="search-modal" class="modal hidden">
       <div class="modal-content">
         <span class="close-modal">
@@ -76,6 +77,17 @@
         <h2>Search Contacts</h2>
         <input type="text" id="search-input" placeholder="Enter name or phone">
         <div id="search-results"></div>
+      </div>
+    </div>
+
+    <!-- модальное окно для вывода контакта при клике на букву -->
+    <div id="letter-contacts-modal" class="letter-contacts-modal hidden">
+      <div class="letter-contacts-modal-content">
+        <span class="close-modal"><i class="fas fa-times"></i></span>
+        <h2>Contacts starting with <span id="modal-letter">J</span></h2>
+        <div id="letter-contacts-list">
+          <!-- Здесь будут отображаться контакты -->
+        </div>
       </div>
     </div>
 </body>
