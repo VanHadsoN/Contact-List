@@ -258,6 +258,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // очищаем предыдущие результаты
             letterContactsContainer.innerHTML = '';
+
+            // проверяем наличие контактов перед открытием
+            if (letterContacts.length === 0) {
+                // если нет контактов, не открываем модальное окно
+                return;
+            }
+
             letterModalTitle.textContent = `Contacts starting with ${letter}`;
 
             // создаём элементы для каждого контакта
