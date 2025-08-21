@@ -10,7 +10,8 @@ import {
     updateLetterCounts,
     clearContacts,
     loadContactsFromLocalStorage,
-    Contact, saveContactsToLocalStorage
+    saveContactsToLocalStorage,
+    Contact
 } from './contacts/index';
 
 const form = document.getElementById('contact-form') as HTMLFormElement;
@@ -238,5 +239,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
             searchResultsContainer.appendChild(resultItem);
         });
+    });
+
+    // получаем элементы для работы с модальным окном букв
+    const letterContactsModal = document.getElementById('letter-contacts-modal')!;
+    const letterContactsContainer = document.getElementById('letter-contacts-container')!;
+    const closeLetterModalBtn = document.querySelector('.close-letter-modal')!;
+    const letterModalTitle = document.getElementById('letter-modal-title')!;
+
+    // модальное окно для вывода контактов при клике на букву
+    document.querySelectorAll('.letter-block').forEach(block => {
+        block.addEventListener('click', () => {
+            const letter = block.getAttribute('data-letter');
+            if (!letter) return;
+
+            // получаем контакты для выбранной буквы
+            const letterContacts = groupByLetter(contacts)[letter] || [];
+
+            // очищаем предыдущие результаты
+            letterContactsContainer.innerHTML = '';
+            letterModalTitle.textContent = `Contacts starting with ${letter}`;
+
+            // создаём элементы для каждого контакта
+            letterContacts.forEach(contact => {
+                const contactItem = document.createElement('div');
+                contactItem.classList.add('letter-contacts-item');
+                contactItem.innerHTML = `
+                    <span>${contact.name} - ${contact.vacancy} - ${contact.phone}</span>
+                    <button class="delete-contact-btn">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                // логика удаления контакта
+                const deleteButton = contactItem.querySelector('.delete-contact-btn')!;
+                deleteButton.addEventListener('click', () => {
+                    if (window.confirm(`Are you sure you want to delete ${contact.name}?`)) {
+                        deleteContact(contact);
+                        contactItem.remove();
+                        updateLetterCounts(contacts);
+                        saveContactsToLocalStorage();
+
+                        // если больше нет контактов на эту букву, закрываем модальное окно
+                        if (letterContactsContainer.children.length === 0) {
+                            letterContactsModal.classList.add('hidden');
+                        }
+                    }
+                });
+
+                letterContactsContainer.appendChild(contactItem);
+            });
+
+            // показываем модальное окно
+            letterContactsModal.classList.remove('hidden');
+        });
+    });
+
+    // закрытие модального окна
+    closeLetterModalBtn.addEventListener('click', () => {
+        letterContactsModal.classList.add('hidden');
     });
 });
